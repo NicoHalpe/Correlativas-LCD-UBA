@@ -15,11 +15,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "set \"GENERATE_SOURCEMAP=false\" && GENERATE_SOURCEMAP=false react-scripts start",
-    "build": "set \"GENERATE_SOURCEMAP=false\" && GENERATE_SOURCEMAP=false react-scripts build -- --prod && cp -R build/* docs && sed -i -e 's+\"/+\"+g' docs/index.html",
+    "start": "set \"GENERATE_SOURCEMAP=false\" && react-scripts start",
+    "build": "set \"GENERATE_SOURCEMAP=false\" && set \"BUILD_PATH=docs\" && react-scripts build -- --prod",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "commit-deploy": "git add docs && git commit -m 'deploy' && git push",
+    "commit-deploy": "git add docs && git commit -m \"deploy\" && git push",
     "deploy": "npm run build && npm run commit-deploy"
   },
   "eslintConfig": {
