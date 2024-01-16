@@ -1,7 +1,8 @@
 {
   "name": "my-app",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "homepage": "https://nicohalpe.github.io/Correlativas-LCD-UBA",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -16,11 +17,11 @@
   },
   "scripts": {
     "start": "set \"GENERATE_SOURCEMAP=false\" && react-scripts start",
-    "build": "set \"GENERATE_SOURCEMAP=false\" && set \"BUILD_PATH=docs\" && react-scripts build -- --prod",
+    "build": "set \"GENERATE_SOURCEMAP=false\" && set \"BUILD_PATH=docs\" && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "commit-deploy": "git add docs && git commit -m \"deploy\" && git push",
-    "deploy": "npm run build && npm run commit-deploy"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -41,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^6.1.1",
     "source-map-loader": "^4.0.1"
   }
 }

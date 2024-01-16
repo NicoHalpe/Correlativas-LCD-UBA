@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.css": "/static/css/main.0ee0bec4.css",
-    "main.js": "/static/js/main.2412cd01.js",
-    "static/js/27.07ddfad5.chunk.js": "/static/js/27.07ddfad5.chunk.js",
-    "index.html": "/index.html"
+    "main.css": "/Correlativas-LCD-UBA/static/css/main.0ee0bec4.css",
+    "main.js": "/Correlativas-LCD-UBA/static/js/main.0158c04b.js",
+    "static/js/27.07ddfad5.chunk.js": "/Correlativas-LCD-UBA/static/js/27.07ddfad5.chunk.js",
+    "index.html": "/Correlativas-LCD-UBA/index.html"
   },
   "entrypoints": [
     "static/css/main.0ee0bec4.css",
-    "static/js/main.2412cd01.js"
+    "static/js/main.0158c04b.js"
   ]
 }
