@@ -10,7 +10,7 @@ import ReactFlow, {
 } from "react-flow-renderer";
 import CourseNode from "./CourseNode.js";
 import YearNode from "./YearNode.js";
-import { nodes as initialNodes, edges as initialEdges, year_labels as years } from "./courses";
+import { years, nodes as initialNodes, connections as initialEdges } from "./materias.js";
 import { toPng } from "html-to-image";
 
 const nodeTypes = { course: CourseNode, year: YearNode };
@@ -144,6 +144,29 @@ function filterNodesByYear(year) {
 	return nodes;
 }
 
+// Filter nodes by background color
+function filterNodesByBackground(background) {
+	var nodes = [];
+	initialNodes.forEach(function (node) {
+		if (node.data.background === background) {
+			nodes.push(node);
+		}
+	});
+
+	// Add left nodes for each node
+	nodes.forEach((node) => {
+		const backward = backward_path(node.id, full_edges);
+		backward.forEach((id) => {
+			const course = course_by_id(id);
+			if (!nodes.includes(course)) {
+				nodes.push(course);
+			}
+		});
+	});
+
+	return nodes;
+}
+
 function course_by_id(id) {
 	var course = null;
 	initialNodes.forEach(function (node) {
@@ -238,7 +261,7 @@ function App() {
 			if (corrAmm[element.id] > 1) {
 				setLabel(
 					"Clickea en " +
-						course_by_id(element.id).data.label.props.children +
+						course_by_id(element.id).data.label +
 						" para ver sus " +
 						corrAmm[element.id] +
 						" correlativas"
@@ -246,24 +269,24 @@ function App() {
 			} else if (corrAmm[element.id] === 1) {
 				setLabel(
 					"Clickea en " +
-						course_by_id(element.id).data.label.props.children +
+						course_by_id(element.id).data.label +
 						" para ver su correlativa"
 				);
 			} else {
-				setLabel(course_by_id(element.id).data.label.props.children + " no tiene correlativas");
+				setLabel(course_by_id(element.id).data.label + " no tiene correlativas");
 			}
 		} else {
 			if (corrAmm[element.id] > 1) {
 				setLabel(
-					course_by_id(element.id).data.label.props.children +
+					course_by_id(element.id).data.label +
 						" tiene " +
 						corrAmm[element.id] +
 						" correlativas"
 				);
 			} else if (corrAmm[element.id] === 1) {
-				setLabel(course_by_id(element.id).data.label.props.children + " tiene 1 correlativa");
+				setLabel(course_by_id(element.id).data.label + " tiene 1 correlativa");
 			} else if (corrAmm[element.id] === 0) {
-				setLabel(course_by_id(element.id).data.label.props.children + " no tiene correlativas");
+				setLabel(course_by_id(element.id).data.label + " no tiene correlativas");
 			} else {
 				setLabel("Clickea en una materia para ver todas sus correlativas");
 			}
@@ -337,6 +360,117 @@ function App() {
 					}}
 				>
 					{label}
+				</div>
+			</div>
+
+			<div
+				style={{
+					position: "absolute",
+					bottom: "20px",
+					width: "100vw",
+					zIndex: 11,
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+					color: "#aaa",
+					fontFamily: '"Inter", sans-serif',
+				}}
+			>
+				<div
+					style={{
+						backgroundColor: "#1E1E1E",
+						padding: "2px",
+						borderRadius: "5px",
+						width: "auto",
+						height: "auto",
+						zIndex: 20,
+						fontFamily: '"Inter", sans-serif',
+						color: "white",
+						display: "flex",
+						alignItems: "center",
+						gap: "40px",
+						textDecoration: "none !important",
+					}}
+				>
+					<div
+						style={{
+							display: "flex",
+							alignItems: "center",
+							gap: "10px",
+							cursor: "pointer",
+						}}
+						onClick={() => {
+							const backgroundColor = "#D9B600";
+							const nodes = filterNodesByBackground(backgroundColor);
+							setNodes(nodes);
+						}}
+						onMouseOver={() => {
+							setLabel("Clickea para ver las materias del CBC");
+						}}
+					>
+						<div
+							style={{
+								width: "15px",
+								height: "15px",
+								borderRadius: "50%",
+								backgroundColor: "#D9B600",
+							}}
+						/>
+						<span>CBC</span>
+					</div>
+
+					<div
+						style={{
+							display: "flex",
+							alignItems: "center",
+							gap: "10px",
+							cursor: "pointer",
+						}}
+						onClick={() => {
+							const backgroundColor = "rgb(241, 197, 152)";
+							const nodes = filterNodesByBackground(backgroundColor);
+							setNodes(nodes);
+						}}
+						onMouseOver={() => {
+							setLabel("Clickea para ver las materias del Título intermedio");
+						}}
+					>
+						<div
+							style={{
+								width: "15px",
+								height: "15px",
+								borderRadius: "50%",
+								backgroundColor: "rgb(241, 197, 152)",
+							}}
+						/>
+						<span>Título intermedio</span>
+					</div>
+
+					<div
+						style={{
+							display: "flex",
+							alignItems: "center",
+							gap: "10px",
+							cursor: "pointer",
+						}}
+						onClick={() => {
+							/* show all nodes */
+							reset();
+						}}
+						onMouseOver={() => {
+							setLabel("Clickea para ver las materias del Título completo");
+						}}
+					>
+						<div
+							style={{
+								width: "15px",
+								height: "15px",
+								borderRadius: "50%",
+								backgroundColor: "rgb(199, 214, 236)",
+							}}
+						/>
+						<span>Título completo</span>
+					</div>
 				</div>
 			</div>
 
