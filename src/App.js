@@ -22,6 +22,16 @@ const onInit = (reactFlowInstance, setReactFlowInstance) => {
 	};
 };
 
+const checkedNodes = JSON.parse(window.localStorage.getItem("checkedNodes"));
+
+if (checkedNodes) {
+	initialNodes.forEach((node) => {
+		if (checkedNodes.includes(node.id)) {
+			node.data.done = true;
+		}
+	});
+}
+
 var lefts = [];
 var rights = [];
 var full_edges = [];
@@ -42,10 +52,26 @@ initialNodes.forEach((n) => {
 	}
 });
 
+initialNodes.forEach((n) => {
+	if (!n.data.done) {
+		n.data.enabled = false;
+		if (backward_path(n.id, full_edges).length === 0) {
+			n.data.enabled = true;
+		}
+		if (n.data.hasLeft) {
+			if (backward_path(n.id, full_edges).every((id) => course_by_id(id).data.done)) {
+				n.data.enabled = true;
+			}
+		}
+	} else {
+		n.data.enabled = true;
+	}
+});
+
 var corrAmm = {};
 var corrAmmLis = [];
 ids.forEach((id) => {
-	var thisPath = path(id);
+	var thisPath = path(id).full;
 	corrAmm[id] = thisPath.length - 1;
 	corrAmmLis.push([id, thisPath.length - 1]);
 });
@@ -87,14 +113,20 @@ function backward_path(n, edges) {
 
 // Graph nodes before and after node n
 function path(n) {
-	return forward_path(n, full_edges).concat(backward_path(n, full_edges)).concat([n]);
+	const forward = forward_path(n, full_edges);
+	const backward = backward_path(n, full_edges);
+	return {
+		forward: forward,
+		backward: backward,
+		full: forward.concat(backward).concat([n]),
+	};
 }
 
 // Filter nodes by ID
 function filterNodesByID(id) {
 	var nodes = [];
 	initialNodes.forEach(function (node) {
-		if (path(id).includes(node.id)) {
+		if (path(id).full.includes(node.id)) {
 			nodes.push(node);
 		}
 	});
@@ -124,7 +156,7 @@ function course_by_id(id) {
 
 function downloadImage(dataUrl) {
 	const a = document.createElement("a");
-	a.setAttribute("download", "Correlativas_LTD_UTDT.png");
+	a.setAttribute("download", "Correlativas_LCD.png");
 	a.setAttribute("href", dataUrl);
 	a.click();
 }
@@ -173,6 +205,7 @@ function App() {
 
 	const nodeClick = (event, element) => {
 		if (element.type === "course") {
+			if (event.target.nodeName === "INPUT") return;
 			if (clickedCourse !== element.id) {
 				setClickedCourse(element.id);
 				updateNodes(element.id, true);
@@ -250,7 +283,32 @@ function App() {
 		if (reactFlowInstance) {
 			reactFlowInstance.fitView({ duration: 800, padding: 0.1, center: true });
 		}
+
+		const nodesChecked = nodes.filter((node) => node.type === "course" && node.data.done);
+		const nodesCheckedIDs = nodesChecked.map((node) => node.id);
+		window.localStorage.setItem("checkedNodes", JSON.stringify(nodesCheckedIDs));
 	}, [nodes, reactFlowInstance]);
+
+	const handleNodeCheck = (event, id) => {
+		var course = course_by_id(id);
+		course.data.done = event.target.checked;
+		var thisPath = path(id).full;
+		thisPath.forEach((id) => {
+			var course = course_by_id(id);
+			if (!course.data.done) {
+				course.data.enabled = false;
+				if (backward_path(id, full_edges).length === 0) {
+					course.data.enabled = true;
+				}
+				if (course.data.hasLeft) {
+					if (backward_path(id, full_edges).every((id) => course_by_id(id).data.done)) {
+						course.data.enabled = true;
+					}
+				}
+			}
+		});
+		setNodes(years.concat(initialNodes));
+	};
 
 	return (
 		<div className="App">
@@ -283,7 +341,20 @@ function App() {
 			</div>
 
 			<ReactFlow
-				nodes={nodes}
+				nodes={[
+					...nodes.map((node) => {
+						if (node.type === "course") {
+							return {
+								...node,
+								data: {
+									...node.data,
+									onCheck: handleNodeCheck,
+								},
+							};
+						}
+						return node;
+					}),
+				]}
 				edges={edges}
 				onNodesChange={onNodesChange}
 				onEdgesChange={onEdgesChange}
