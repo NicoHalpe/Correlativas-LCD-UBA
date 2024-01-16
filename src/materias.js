@@ -7,7 +7,7 @@ const materias = {
 			background: "#D9B600",
 			label: "ICSE",
 			cuatrimestre: 1,
-			unlocks: ["y2-m1", "y2-m2", "y2-m3", "y2-m4"],
+			requires: [],
 		},
 		{
 			year: "cbc",
@@ -15,21 +15,21 @@ const materias = {
 			background: "#D9B600",
 			label: "Análisis",
 			cuatrimestre: 1,
-			unlocks: ["y2-m1", "y2-m2", "y2-m3", "y2-m4"],
+			requires: [],
 		},
 		{
 			foreground: "#000",
 			background: "#D9B600",
 			label: "Química",
 			cuatrimestre: 1,
-			unlocks: ["y2-m1", "y2-m2", "y2-m3", "y2-m4"],
+			requires: [],
 		},
 		{
 			foreground: "#000",
 			background: "#D9B600",
 			label: "IPC",
 			cuatrimestre: 2,
-			unlocks: ["y2-m1", "y2-m2", "y2-m3", "y2-m4"],
+			requires: [],
 		},
 		{
 			year: "cbc",
@@ -37,14 +37,14 @@ const materias = {
 			background: "#D9B600",
 			label: "Álgebra",
 			cuatrimestre: 2,
-			unlocks: ["y2-m1", "y2-m2", "y2-m3", "y2-m4"],
+			requires: [],
 		},
 		{
 			foreground: "#000",
 			background: "#D9B600",
 			label: "Física",
 			cuatrimestre: 2,
-			unlocks: ["y2-m1", "y2-m2", "y2-m3", "y2-m4"],
+			requires: [],
 		},
 	],
 	"1er Año": [
@@ -53,28 +53,28 @@ const materias = {
 			background: "rgb(241, 197, 152)",
 			label: "Álgebra I",
 			cuatrimestre: 1,
-			unlocks: ["y3-m3", "y3-m4", "y3-m5"],
+			requires: ["CBC"],
 		},
 		{
 			foreground: "#000",
 			background: "rgb(241, 197, 152)",
 			label: "Algoritmos y Estructuras de Datos I",
 			cuatrimestre: 1,
-			unlocks: ["y3-m1", "y3-m3", "y3-m4"],
+			requires: ["CBC"],
 		},
 		{
 			foreground: "#000",
 			background: "rgb(241, 197, 152)",
 			label: "Electiva de Introducción a las Ciencias Naturales",
 			cuatrimestre: 2,
-			unlocks: [],
+			requires: ["CBC"],
 		},
 		{
 			foreground: "#000",
 			background: "rgb(241, 197, 152)",
 			label: "Análisis I",
 			cuatrimestre: 2,
-			unlocks: ["y3-m2"],
+			requires: ["CBC"],
 		},
 	],
 	"2do Año": [
@@ -83,35 +83,35 @@ const materias = {
 			background: "rgb(241, 197, 152)",
 			label: "Laboratorio de Datos",
 			cuatrimestre: 1,
-			unlocks: ["y4-m3"],
+			requires: ["Algoritmos y Estructuras de Datos I"],
 		},
 		{
 			foreground: "#000",
 			background: "rgb(241, 197, 152)",
 			label: "Análisis II",
 			cuatrimestre: 1,
-			unlocks: ["y3-m5", "y4-m5"],
+			requires: ["Análisis I"],
 		},
 		{
 			foreground: "#000",
 			background: "rgb(241, 197, 152)",
 			label: "Álgebra Lineal Computacional",
 			cuatrimestre: 1,
-			unlocks: ["y4-m3", "y4-m4", "y4-m5"],
+			requires: ["Álgebra I", "Algoritmos y Estructuras de Datos I"],
 		},
 		{
 			foreground: "#000",
 			background: "rgb(241, 197, 152)",
 			label: "Algoritmos y Estructuras de Datos II",
 			cuatrimestre: 2,
-			unlocks: ["y4-m2", "y4-m4"],
+			requires: ["Álgebra I", "Algoritmos y Estructuras de Datos I"],
 		},
 		{
 			foreground: "#000",
 			background: "rgb(199, 214, 236)",
 			label: "Análisis Avanzado",
 			cuatrimestre: 2,
-			unlocks: ["y4-m1", "y4-m4"],
+			requires: ["Análisis II", "Álgebra I"],
 		},
 	],
 	"3er Año": [
@@ -120,35 +120,59 @@ const materias = {
 			background: "rgb(199, 214, 236)",
 			label: "Probabilidad",
 			cuatrimestre: 1,
-			unlocks: ["y4-m3"],
+			requires: ["Análisis Avanzado"],
 		},
 		{
 			foreground: "#000",
 			background: "rgb(199, 214, 236)",
 			label: "Algoritmos y Estructuras de Datos III",
 			cuatrimestre: 1,
-			unlocks: ["y4-m5"],
+			requires: ["Algoritmos y Estructuras de Datos II"],
 		},
 		{
 			foreground: "#000",
 			background: "rgb(199, 214, 236)",
 			label: "Intr. a la Estadística y Ciencia de Datos",
 			cuatrimestre: 2,
-			unlocks: [],
+			requires: ["Laboratorio de Datos", "Probabilidad", "Álgebra Lineal Computacional"],
 		},
 		{
 			foreground: "#000",
 			background: "rgb(199, 214, 236)",
 			label: "Intr. al Modelado Continuo",
 			cuatrimestre: 2,
-			unlocks: [],
+			requires: [
+				"Análisis Avanzado",
+				"Álgebra Lineal Computacional",
+				"Algoritmos y Estructuras de Datos II",
+			],
 		},
 		{
 			foreground: "#000",
 			background: "rgb(199, 214, 236)",
 			label: "Intr. a la Investigación Operativa y Optimización",
 			cuatrimestre: 2,
-			unlocks: [],
+			requires: [
+				"Algoritmos y Estructuras de Datos III",
+				"Análisis II",
+				"Álgebra Lineal Computacional",
+			],
+		},
+	],
+	"4to Año": [
+		{
+			foreground: "#000",
+			background: "rgb(199, 214, 236)",
+			label: "Materias Optativas",
+			cuatrimestre: 1,
+			requires: ["3er Año"],
+		},
+		{
+			foreground: "#000",
+			background: "rgb(199, 214, 236)",
+			label: "Tésis / Proyecto Final",
+			cuatrimestre: 2,
+			requires: ["3er Año"],
 		},
 	],
 };
@@ -187,16 +211,39 @@ Object.keys(materias).forEach((year, i) => {
 	});
 });
 
+const findMateriaByLabel = (label) => {
+	return parsedMaterias.find((materia) => materia.data.label === label);
+};
+
+const findMateriasByYear = (year) => {
+	return parsedMaterias.filter((materia) => materia.data.year === year);
+};
+
 const parsedEdges = [];
 parsedMaterias.forEach((materia) => {
-	if (materia.data.unlocks) {
-		materia.data.unlocks.forEach((unlock) => {
-			parsedEdges.push({
-				id: `${materia.id}-${unlock}`,
-				source: materia.id,
-				target: unlock,
-				markerEnd: { type: MarkerType.ArrowClosed },
-			});
+	if (materia.data.requires) {
+		materia.data.requires.forEach((require) => {
+			const source = findMateriaByLabel(require);
+			if (!source) {
+				const sourceYear = findMateriasByYear(require);
+				if (sourceYear.length > 0) {
+					sourceYear.forEach((mat) => {
+						parsedEdges.push({
+							id: `${mat.id}-${materia.id}`,
+							source: mat.id,
+							target: materia.id,
+							markerEnd: { type: MarkerType.ArrowClosed },
+						});
+					});
+				}
+			} else {
+				parsedEdges.push({
+					id: `${source.id}-${materia.id}`,
+					source: source.id,
+					target: materia.id,
+					markerEnd: { type: MarkerType.ArrowClosed },
+				});
+			}
 		});
 	}
 });
